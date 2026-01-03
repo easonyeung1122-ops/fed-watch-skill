@@ -1,0 +1,414 @@
+﻿# ==============================================================================
+# FedSight AI: Study Configuration
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# SECTION 0: STUDY IDENTITY & HIGH-LEVEL METHODOLOGICAL NOTES
+# ------------------------------------------------------------------------------
+study_metadata:
+  study_name: "FedSight AI: Multi-Agent System Architecture for Federal Funds Target Rate Prediction"
+  target_variable:
+    name: "fftr_change_bps"
+    definition: "Change in the Federal Funds Target Rate (FFTR) at each meeting, expressed in basis points."
+    unit: "basis_points"
+  evaluation_meetings:
+    start_date: "2023-02-01"
+    end_date: "2024-12-18"
+    total_scheduled_meetings: 16
+  disclosure_gaps_from_paper_excerpt:
+    - "Exact prompt wording ('robust instructions') for each agent role."
+    - "LLM decoding settings (temperature/top_p/penalties/max_tokens)."
+    - "Exact futures->probability extraction method used by Analyst."
+    - "Exact clustering algorithm and preprocessing details for agent archetypes."
+    - "Vote aggregation rule and tie-break rule."
+    - "Embedding model and text normalization rules used for Semantic Similarity."
+
+# ------------------------------------------------------------------------------
+# SECTION 1: LLM ENGINE & INFERENCE CONFIGURATION
+# ------------------------------------------------------------------------------
+llm_engine_config:
+  model_name: "gpt-4o"
+  # Note: api_key is loaded from environment variable OPENAI_API_KEY at runtime
+  api_key: "${OPENAI_API_KEY}"
+  
+  # Decoding / sampling settings
+  temperature: 0.2
+  top_p: 1.0
+  frequency_penalty: 0.0
+  presence_penalty: 0.0
+  
+  # Token limits
+  max_tokens_output: 4096
+  context_window_limit: 128000
+  
+  # Reproducibility controls
+  seed: 42
+  
+  # Robustness controls
+  request_timeout_s: 120
+  max_retries: 6
+  retry_backoff_base_s: 1.5
+  retry_backoff_max_s: 30.0
+  
+  # Logging policy
+  logging:
+    log_prompts: true
+    log_responses: true
+    log_token_usage: true
+    redact_secrets: true
+
+# ------------------------------------------------------------------------------
+# SECTION 2: SIMULATION & EXPERIMENTAL BOUNDARIES
+# ------------------------------------------------------------------------------
+simulation_config:
+  start_date: "2023-02-01"
+  end_date: "2024-12-18"
+  total_meetings: 16
+  runs_per_meeting: 5
+  data_vintage_lag_days: 2
+  meeting_date_definition: "decision_announcement_day"
+  vote_aggregation_rule: "majority_rule_over_member_votes"
+  tie_break_rule: "choose_neutral_option"
+  run_to_meeting_prediction_rule: "mode_of_run_level_decisions"
+  token_accounting_scope: "sum_of_all_llm_call_tokens_within_meeting_run_across_roles"
+  metrics_to_calculate:
+    - "total_accuracy"
+    - "agent_accuracy"
+    - "voting_stability"
+    - "semantic_similarity"
+    - "average_tokens"
+    - "mae"
+
+# ------------------------------------------------------------------------------
+# SECTION 3: RAW DATA STRUCTURE SCHEMAS (INPUTS)
+# ------------------------------------------------------------------------------
+data_schemas:
+  structured_macro_schema:
+    meeting_date: "datetime64[ns]"
+    info_cutoff_datetime: "datetime64[ns]"
+    pce_index_yoy: "float"
+    cpi_index_yoy: "float"
+    inflation_expectations_1yr: "float"
+    treasury_yield_3m: "float"
+    treasury_yield_6m: "float"
+    m2_supply_level_sa: "float"
+    bbk_real_gdp_nowcast: "float"
+    unemployment_rate_u3: "float"
+    vix_index: "float"
+    fed_chair: "category"
+    white_house_party: "category"
+    previous_fftr_target: "int"
+    previous_change: "int"
+  
+  unstructured_narrative_schema:
+    meeting_date: "datetime64[ns]"
+    info_cutoff_datetime: "datetime64[ns]"
+    beige_book_raw_text: "str"
+    dot_plot_distribution: "dict"
+    fedwatch_raw_text: "str"
+    fedwatch_probabilities: "dict"
+    fed_funds_futures_raw: "str_or_dict"
+    fomc_statement_actual_text: "str"
+  
+  agent_characteristic_schema:
+    participant_id: "str"
+    name: "str"
+    hawkishness_score: "float"
+    regional_affiliation: "category"
+    gender: "category"
+    political_party: "category"
+    focus_on_labor: "float"
+    focus_on_inflation: "float"
+    focus_on_banking: "float"
+    focus_on_global_trends: "float"
+    tenure_years: "float"
+  
+  meeting_outcomes_schema:
+    meeting_date: "datetime64[ns]"
+    fftr_change_bps: "int"
+    fftr_target_before_bps: "int"
+    fftr_target_after_bps: "int"
+    decision_category: "category"
+  
+  fomc_statements_actual_schema:
+    meeting_date: "datetime64[ns]"
+    statement_release_datetime: "datetime64[ns]"
+    fomc_statement_actual_text: "str"
+    statement_source_url: "str"
+
+# ------------------------------------------------------------------------------
+# SECTION 4: AGENT ARCHITECTURE & CLUSTERING PARAMETERS
+# ------------------------------------------------------------------------------
+agent_architecture_config:
+  clustering_procedure_spec:
+    clustering_algorithm: "KMeans"
+    n_clusters: 3
+    random_state: 42
+    feature_preprocessing:
+      categorical_encoding: "one_hot"
+      numeric_scaling: "standardize"
+      missing_value_policy: "impute"
+    features_to_cluster:
+      - "hawkishness_score"
+      - "regional_affiliation"
+      - "gender"
+      - "political_party"
+      - "focus_on_labor"
+      - "focus_on_inflation"
+      - "focus_on_banking"
+      - "focus_on_global_trends"
+      - "tenure_years"
+  
+  archetype_names:
+    - "Regional Pragmatists"
+    - "Academic Balancers"
+    - "Central Policymakers"
+  
+  archetype_mapping_policy: "assign_cluster_to_archetype_by_centroid_interpretation_and_lock_mapping"
+  
+  roles:
+    analyst_role_name: "Analyst"
+    economist_role_name: "Economist"
+    member_role_name: "Member"
+    statement_drafter_role_name: "StatementDrafter"
+  
+  n_member_agents: 3
+  
+  archetypes:
+    cluster_0:
+      name: "Regional Pragmatists"
+      description: >
+        You are a Regional Pragmatist. You prioritize qualitative regional conditions
+        from the Beige Book and real-economy feedback. You focus on pragmatic signals
+        and are cautious about overfitting to theory when narratives disagree.
+    cluster_1:
+      name: "Academic Balancers"
+      description: >
+        You are an Academic Balancer. You weigh inflation, expectations, and coherent
+        macroeconomic logic heavily. You emphasize forward-looking signals and consistency
+        with stated policy objectives.
+    cluster_2:
+      name: "Central Policymakers"
+      description: >
+        You are a Central Policymaker. You prioritize committee consensus, institutional
+        credibility, and avoiding unnecessary market surprises absent strong justification.
+
+# ------------------------------------------------------------------------------
+# SECTION 5: PREPROCESSING & ALGORITHMIC CONSTRAINTS
+# ------------------------------------------------------------------------------
+preprocessing_config:
+  cod_max_words_per_step: 30
+  dot_plot_format_string: "Year {year}: {range}: {count} members"
+  dot_plot_missing_policy: "use_latest_available_prior_sep"
+  beige_book_scope_policy: "national_summary_only"
+  include_full_district_reports: false
+  unstructured_injection_policy:
+    concatenation_order:
+      - "beige_book_raw_text_with_instruction_header"
+      - "dot_plot_verbalized_distribution_with_instruction_header"
+      - "fedwatch_raw_text_with_instruction_header"
+    include_fedwatch_probabilities_as_text: true
+    include_fed_funds_futures_in_member_context: false
+  text_truncation:
+    truncate_beige_book: false
+    beige_book_max_chars: null
+    truncate_statement_generation_inputs: false
+
+# ------------------------------------------------------------------------------
+# SECTION 6: PROMPT TEMPLATES
+# ------------------------------------------------------------------------------
+prompt_templates:
+  analyst_system_prompt: |
+    You are a Quantitative Financial Analyst.
+    Your task is to interpret the provided Fed Funds Futures data to determine the market-implied probability
+    of a rate hike, cut, or hold for the upcoming FOMC meeting.
+
+    ### DATA:
+    Fed Funds Futures Raw Data:
+    {futures_data}
+
+    ### OUTPUT REQUIREMENT:
+    Provide a structured summary:
+    - Probability of Hike: [X]%
+    - Probability of Cut: [Y]%
+    - Probability of Hold: [Z]%
+    - Dominant Market Sentiment: [Brief Summary]
+
+    Use only the provided data. If the data is insufficient, state what is missing and provide the
+    best bounded estimate you can justify.
+
+    This baseline will serve as an external benchmark for the committee's deliberation.
+
+  economist_task_prompt: |
+    You are the Chief Economist for the Federal Open Market Committee (FOMC).
+    Your objective is to formulate three distinct policy options for the upcoming interest rate decision
+    based strictly on the provided economic snapshot and narratives.
+
+    ### INPUT DATA:
+    Inflation Metrics: {inflation_data} (PCE, CPI, Expectations)
+    Labor Market: {labor_data} (Unemployment Rate)
+    Growth Indicators: {growth_data} (Real-time GDP estimate/nowcast)
+    Financial Conditions: {financial_data} (Treasury Yields, VIX)
+    Unstructured Narratives: {unstructured_context} (Beige Book, Dot Plot, FedWatch)
+
+    Market Benchmark (Analyst): {analyst_market_summary}
+
+    ### INSTRUCTIONS:
+    Analyze the data above and propose three distinct policy options:
+    1. Option A (Dovish): A rationale for cutting rates or pausing, emphasizing growth risks or disinflation.
+    2. Option B (Neutral): A rationale for maintaining the status quo, balancing risks.
+    3. Option C (Hawkish): A rationale for hiking rates, emphasizing persistent inflation.
+
+    For each option, provide a concise macroeconomic justification rooted strictly in the provided data.
+
+  member_system_persona: |
+    You are a voting member of the FOMC. You are not an AI assistant; you are a policymaker with a specific
+    economic philosophy.
+
+    ### YOUR PROFILE:
+    Archetype: {archetype_name}
+    Description: {archetype_description}
+
+    ### BEHAVIORAL GUIDELINES:
+    1. Adopt the tone and reasoning style of your archetype.
+    2. Weigh the provided data according to your specific focus (e.g., Labor vs. Inflation).
+    3. You must be willing to debate and dissent if the data supports your specific view.
+
+  member_cod_deliberation: |
+    You are participating in the FOMC policy debate.
+    Review the Economist's proposed options and the data below.
+
+    ### ECONOMIST OPTIONS:
+    {economist_options}
+    (Option A = Dovish, Option B = Neutral, Option C = Hawkish)
+
+    ### UNSTRUCTURED CONTEXT:
+    Beige Book Summary: {beige_book_text}
+    Dot Plot Distribution: {dot_plot_text}
+    FedWatch: {fedwatch_text}
+    FedWatch Probabilities (if provided): {market_probs}
+
+    ### STRUCTURED SNAPSHOT:
+    {structured_macro_data}
+
+    ### TASK: CHAIN-OF-DRAFT REASONING (CoD)
+    You must determine your vote. Do not jump to a conclusion.
+
+    Phase 1 — Draft:
+    Write a sequence of concise steps. **CONSTRAINT:** Each step must be **30 words or fewer**.
+    Step 1: Analyze inflation relative to policy goals. (Max 30 words)
+    Step 2: Analyze labor market conditions. (Max 30 words)
+    Step 3: Integrate Beige Book qualitative signals. (Max 30 words)
+    Step 4: Use Dot Plot to assess committee expectations/dispersion. (Max 30 words)
+    Step 5: Compare against Options A/B/C. (Max 30 words)
+
+    Phase 2 — Revision:
+    Revise your draft into a coherent final position.
+
+    ### FINAL OUTPUT:
+    - Vote: [Option A / Option B / Option C]
+    - Implied Action (if inferable): [Basis Points]
+    - Rationale: [One coherent paragraph consistent with your draft]
+
+  icl_reflection: |
+    ### SIMULATION FEEDBACK
+    You previously voted: {agent_vote}
+    The ACTUAL FOMC Decision for this meeting was: {true_outcome}
+
+    ### REFLECTION TASK:
+    Compare your reasoning against the actual historical outcome.
+    1. Identify the gap: Did you overweigh inflation? Did you ignore a signal in the Beige Book?
+    2. Formulate a "Lesson Learned": A one-sentence strategic adjustment for future meetings.
+
+    This lesson will be added to your long-term memory for the next simulation.
+
+  chair_statement_generation: |
+    You are drafting a simulated FOMC statement in the style of official Federal Reserve communications.
+    The committee has finished voting.
+
+    ### VOTING RECORD:
+    {voting_record}
+    (e.g., "2 members voted Option C (Hawkish), 1 member voted Option B (Neutral)")
+
+    ### MAJORITY RATIONALE:
+    {majority_reasoning_summary}
+
+    ### TASK:
+    Draft the simulated FOMC Statement.
+    1. State the decision on the federal funds rate clearly.
+    2. Summarize the economic outlook that justifies this decision.
+    3. Acknowledge the balance of risks.
+    4. Maintain the formal, precise, and neutral tone of official communications.
+
+  icl_historical_simulation_prompt: |
+    You are participating in a historical FOMC meeting simulation for training via in-context learning.
+
+    ### HISTORICAL MEETING:
+    {historical_meeting_id}
+
+    ### INPUTS (as of that meeting; no hindsight):
+    Structured snapshot:
+    {structured_macro_data}
+
+    Unstructured context:
+    Beige Book:
+    {beige_book_text}
+
+    Dot Plot (if available):
+    {dot_plot_text}
+
+    FedWatch (if available):
+    {fedwatch_text}
+
+    ### TASK:
+    1. Cast your vote for the policy decision.
+    2. Justify your vote using only the provided inputs.
+    3. Provide your forecast of year-end target(s) as requested by the simulation setup.
+
+    Return your answer clearly labeled under: Vote, Rationale, Year-End Forecast.
+
+# ------------------------------------------------------------------------------
+# SECTION 7: ICL TRAINING PARAMETERS (SIMULATION-BASED)
+# ------------------------------------------------------------------------------
+icl_training_config:
+  training_type: "In-Context Learning (Simulation-Based Fine-Tuning)"
+  training_meetings:
+    - "2019-10-30"
+    - "2022-01-26"
+    - "2022-03-16"
+  memory_storage_type: "vector_database_or_append_only_log"
+  memory_retrieval_policy:
+    mode: "retrieve_top_k_by_semantic_similarity"
+    top_k: 5
+    min_similarity_threshold: 0.0
+  feedback_mechanism: "Ground Truth Comparison"
+
+# ------------------------------------------------------------------------------
+# SECTION 8: EMBEDDINGS & SEMANTIC SIMILARITY CONFIG
+# ------------------------------------------------------------------------------
+embedding_config:
+  embedding_model_name: "CHOOSE_AND_LOG_EMBEDDING_MODEL_ID"
+  text_normalization_rules:
+    strip_whitespace: true
+    collapse_multiple_spaces: true
+    lowercase: false
+  similarity_aggregation_rule: "average_over_runs_then_average_over_meetings"
+
+# ------------------------------------------------------------------------------
+# SECTION 9: EVALUATION CONFIG
+# ------------------------------------------------------------------------------
+evaluation_config:
+  metric_formulas_latex:
+    total_accuracy: "\\frac{1}{n} \\sum_{i=1}^{n} \\mathbbm{1}\\{ \\hat{y}_i = y_i \\}"
+    agent_accuracy: "\\frac{1}{N} \\sum_{i=1}^{N} \\frac{1}{K} \\sum_{k=1}^{K} \\mathbbm{1}\\{ \\widehat{\\text{Vote}}_{i,k} = \\text{Vote}^*_i \\}"
+    voting_stability: "\\operatorname{avg}_{i,j,k}\\; \\mathbbm{1}\\{ \\widehat{\\text{Vote}}_{i,j,k} = \\widehat{\\text{Vote}}^{\\text{mode}}_{i,k} \\}"
+    semantic_similarity: "\\frac{1}{n} \\sum_{i=1}^{n} \\frac{S_i \\cdot S_{\\text{actual}}}{\\| S_i \\| \\, \\| S_{\\text{actual}} \\|}"
+    mae: "\\frac{1}{n} \\sum_{i=1}^{n} | y_i - \\hat{y}_i |"
+  
+  required_artifacts:
+    - "y_i (ground truth fftr_change_bps)"
+    - "run_level_predictions (per meeting per run)"
+    - "member_votes (per meeting per run per agent)"
+    - "generated_statements (per meeting per run)"
+    - "actual_statements (per meeting)"
+    - "token_usage_per_llm_call (per meeting per run per role)"
