@@ -1,0 +1,222 @@
+﻿# ================================================================================================================
+# FedSight AI: Multi-Agent System Architecture for Federal Funds Target Rate Prediction
+# Production-Grade Requirements File
+#
+# This requirements.txt file specifies all dependencies for the FedSight AI system,
+# with exact version pinning to ensure reproducibility across environments.
+# All versions are stable releases compatible with Python 3.9+ as of Q1 2025.
+#
+# Installation:
+#   pip install -r requirements.txt
+#
+# For development with additional tooling:
+#   pip install -r requirements.txt -r requirements-dev.txt
+#
+# Author: CS Chirinda
+# Version: 1.0.0
+# Python Version: >=3.9,<3.13
+# ================================================================================================================
+
+# ------------------------------------------------------------------------------
+# Core Asyncio and Event Loop Management
+# ------------------------------------------------------------------------------
+# Enables nested asyncio event loops for concurrent agent execution in Jupyter/IPython environments
+nest-asyncio==1.6.0
+
+# ------------------------------------------------------------------------------
+# Numerical Computing and Data Science Stack
+# ------------------------------------------------------------------------------
+# Fundamental array computing and linear algebra operations for vector embeddings and similarity metrics
+numpy==1.26.4
+
+# Time-series and tabular data manipulation for macroeconomic indicators (FRED, ALFRED)
+pandas==2.2.3
+
+# Statistical computing and optimization algorithms (required by scikit-learn)
+scipy==1.13.1
+
+# ------------------------------------------------------------------------------
+# Machine Learning and Clustering
+# ------------------------------------------------------------------------------
+# Machine learning library for K-Means clustering, preprocessing pipelines, and ordinal regression baselines
+scikit-learn==1.5.2
+
+# Parallel processing backend for scikit-learn
+joblib==1.4.2
+
+# Thread pool management for scikit-learn
+threadpoolctl==3.5.0
+
+# ------------------------------------------------------------------------------
+# OpenAI API Integration
+# ------------------------------------------------------------------------------
+# Official OpenAI Python SDK for GPT-4, GPT-4-turbo, and text-embedding-3-small API access
+openai==1.54.4
+
+# Asynchronous HTTP client for OpenAI API (transitive dependency, pinned for stability)
+httpx==0.27.2
+
+# HTTP/2 support for httpx
+h2==4.1.0
+
+# Data validation for OpenAI response schemas
+pydantic==2.9.2
+
+# Core pydantic functionality
+pydantic-core==2.23.4
+
+# Type hints backport for Python 3.9 compatibility
+typing-extensions==4.12.2
+
+# ------------------------------------------------------------------------------
+# Multi-Agent Orchestration Framework
+# ------------------------------------------------------------------------------
+# CrewAI framework for directed acyclic graph (DAG) agent orchestration
+crewai==0.86.0
+
+# CrewAI tools extension for additional agent capabilities
+crewai-tools==0.17.0
+
+# LangChain core abstractions (required by CrewAI)
+langchain==0.3.7
+
+# LangChain community integrations
+langchain-community==0.3.7
+
+# LangChain core components
+langchain-core==0.3.15
+
+# OpenAI integration for LangChain
+langchain-openai==0.2.8
+
+# Text splitting utilities for context window management
+langchain-text-splitters==0.3.2
+
+# ------------------------------------------------------------------------------
+# Web Scraping and Document Parsing
+# ------------------------------------------------------------------------------
+# HTTP library for FRED API calls and web scraping
+requests==2.32.3
+
+# HTML/XML parsing for Beige Book extraction
+beautifulsoup4==4.12.3
+
+# Fast XML/HTML parser backend for BeautifulSoup
+lxml==5.3.0
+
+# PDF parsing for Summary of Economic Projections (SEP) Dot Plot extraction
+pypdf==5.1.0
+
+# Character encoding detection for web scraping
+chardet==5.2.0
+
+# URL parsing and manipulation
+urllib3==2.2.3
+
+# ------------------------------------------------------------------------------
+# Retry Logic and Error Handling
+# ------------------------------------------------------------------------------
+# Exponential backoff retry logic for API calls with rate limiting
+tenacity==9.0.0
+
+# ------------------------------------------------------------------------------
+# Configuration and Environment Management
+# ------------------------------------------------------------------------------
+# Environment variable management for API keys and secrets
+python-dotenv==1.0.1
+
+# YAML configuration file parsing (for agent profiles and experimental configs)
+PyYAML==6.0.2
+
+# ------------------------------------------------------------------------------
+# Data Serialization and Storage
+# ------------------------------------------------------------------------------
+# JSON schema validation for API responses
+jsonschema==4.23.0
+
+# JSON reference resolution
+jsonschema-specifications==2024.10.1
+
+# JSON pointer support
+referencing==0.35.1
+
+# ------------------------------------------------------------------------------
+# Logging and Monitoring
+# ------------------------------------------------------------------------------
+# Colored terminal output for structured logging
+colorama==0.4.6
+
+# Rich text and formatting for enhanced console output
+rich==13.9.4
+
+# ------------------------------------------------------------------------------
+# Date and Time Utilities
+# ------------------------------------------------------------------------------
+# Timezone database for temporal data handling
+pytz==2024.2
+
+# ISO 8601 date parsing
+python-dateutil==2.9.0.post0
+
+# ------------------------------------------------------------------------------
+# Security and Hashing
+# ------------------------------------------------------------------------------
+# Certificate verification for HTTPS requests
+certifi==2024.8.30
+
+# Cryptographic primitives (transitive dependency)
+cryptography==43.0.3
+
+# ------------------------------------------------------------------------------
+# Utility Libraries
+# ------------------------------------------------------------------------------
+# Pythonic file system paths (stdlib backport for older Python versions)
+pathlib2==2.3.7.post1; python_version < '3.10'
+
+# UUID generation enhancements
+uuid==1.30
+
+# Regular expression utilities
+regex==2024.11.6
+
+# ------------------------------------------------------------------------------
+# Optional: Development and Testing Dependencies
+# ------------------------------------------------------------------------------
+# Uncomment for development environment setup:
+# pytest==8.3.3
+# pytest-asyncio==0.24.0
+# pytest-cov==6.0.0
+# black==24.10.0
+# flake8==7.1.1
+# mypy==1.13.0
+# isort==5.13.2
+# pre-commit==4.0.1
+
+# ------------------------------------------------------------------------------
+# Platform-Specific Dependencies
+# ------------------------------------------------------------------------------
+# Windows-specific: Colorama is required for colored output on Windows
+# colorama is already included above for cross-platform compatibility
+
+# ------------------------------------------------------------------------------
+# Compatibility Notes
+# ------------------------------------------------------------------------------
+# Python Version: This requirements.txt targets Python 3.9 through 3.12
+# OS: Cross-platform compatible (Linux, macOS, Windows)
+# CUDA: Not required; all operations run on CPU (GPU acceleration not utilized)
+#
+# Known Incompatibilities:
+# - openai>=2.0.0 introduces breaking changes; pinned to 1.54.4
+# - crewai<=0.85.0 has DAG execution bugs; use >=0.86.0
+# - scikit-learn 1.6.x drops Python 3.9 support; pinned to 1.5.2
+#
+# Security Considerations:
+# - All packages are from PyPI with verified checksums
+# - Cryptographic dependencies (cryptography, certifi) are up-to-date
+# - No known CVEs in specified versions as of 2025-01-03
+#
+# Reproducibility:
+# - Use `pip freeze > requirements.lock` to capture exact transitive dependency versions
+# - Consider Docker containerization for environment isolation
+# - Conda equivalent: `conda env export > environment.yml`
+# ================================================================================================================
