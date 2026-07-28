@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FedSight AI — FOMC 利率预测报告 | 2026-07-28</title>
+<style>
+  :root {
+    --bg: #0b0e14;
+    --card: #131820;
+    --border: #1e2636;
+    --text: #c9d1d9;
+    --text-dim: #6e7681;
+    --accent: #58a6ff;
+    --green: #3fb950;
+    --red: #f85149;
+    --yellow: #d2991d;
+    --purple: #a371f7;
+    --orange: #db6d28;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans SC', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+  }
+  .container { max-width: 960px; margin:0 auto; padding: 40px 24px; }
+
+  /* Header */
+  .header {
+    text-align: center;
+    padding: 48px 0 32px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 32px;
+  }
+  .header h1 { font-size: 2rem; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 8px; }
+  .header .subtitle { color: var(--text-dim); font-size: 0.95rem; }
+  .header .badge {
+    display: inline-block;
+    background: rgba(63, 185, 80, 0.12);
+    color: var(--green);
+    border: 1px solid rgba(63, 185, 80, 0.3);
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    margin-top: 12px;
+    font-weight: 600;
+  }
+
+  /* Prediction Banner */
+  .prediction-banner {
+    background: linear-gradient(135deg, #1a2332 0%, #0f1923 100%);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 32px;
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 32px;
+  }
+  .prediction-icon {
+    font-size: 3.5rem;
+    width: 80px; height: 80px;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(63, 185, 80, 0.08);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .prediction-content h2 { font-size: 1.4rem; margin-bottom: 8px; color: var(--green); }
+  .prediction-details { display: flex; gap: 24px; margin-top: 12px; }
+  .prediction-item { text-align: center; }
+  .prediction-item .value { font-size: 1.5rem; font-weight: 700; color: #fff; }
+  .prediction-item .label { font-size: 0.78rem; color: var(--text-dim); margin-top: 2px; }
+
+  /* Section */
+  .section { margin-bottom: 32px; }
+  .section h3 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* Data grid */
+  .data-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .data-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+  }
+  .data-card .label { font-size: 0.78rem; color: var(--text-dim); margin-bottom: 4px; }
+  .data-card .value { font-size: 1.3rem; font-weight: 700; }
+  .data-card .sub { font-size: 0.75rem; color: var(--text-dim); margin-top: 2px; }
+  .value.warn { color: var(--yellow); }
+  .value.good { color: var(--green); }
+  .value.neutral { color: var(--accent); }
+
+  /* Vote bar */
+  .vote-bar-container { display: flex; height: 36px; border-radius: 6px; overflow: hidden; margin-bottom: 8px; }
+  .vote-bar-hawk { background: var(--red); }
+  .vote-bar-hold { background: var(--accent); }
+  .vote-bar-dove { background: var(--green); }
+  .vote-legend { display: flex; gap: 20px; font-size: 0.85rem; }
+  .vote-legend span { display: flex; align-items: center; gap: 6px; }
+  .vote-legend .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+  .voting-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 14px;
+  }
+  .voting-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+  .voting-name { font-size: 1.05rem; font-weight: 600; }
+  .voting-role { font-size: 0.78rem; color: var(--text-dim); }
+  .voting-tag {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+  .tag-hawk { background: rgba(248, 81, 73, 0.15); color: var(--red); border: 1px solid rgba(248, 81, 73, 0.3); }
+  .tag-hold { background: rgba(88, 166, 255, 0.15); color: var(--accent); border: 1px solid rgba(88, 166, 255, 0.3); }
+  .tag-dove { background: rgba(63, 185, 80, 0.15); color: var(--green); border: 1px solid rgba(63, 185, 80, 0.3); }
+  .voting-arc { font-size: 0.82rem; color: var(--text-dim); }
+  .voting-cot { 
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    margin: 8px 0;
+    padding: 8px 12px;
+    background: rgba(255,255,255,0.02);
+    border-radius: 6px;
+  }
+  .voting-rationale { font-size: 0.88rem; margin-top: 8px; line-height: 1.5; }
+  .voting-action {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+    font-weight: 600;
+  }
+
+  /* Statement */
+  .statement {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 10px 10px 0;
+    padding: 24px 28px;
+    font-family: 'Georgia', 'Noto Serif SC', serif;
+    font-size: 0.92rem;
+    line-height: 1.8;
+  }
+  .statement p { margin-bottom: 14px; }
+  .statement p:last-child { margin-bottom: 0; }
+
+  /* Tension chart */
+  .tension-bar {
+    display: flex;
+    height: 8px;
+    border-radius: 4px;
+    background: var(--border);
+    margin: 16px 0;
+    position: relative;
+  }
+  .tension-fill { height: 100%; border-radius: 4px; }
+  .tension-labels { display: flex; justify-content: space-between; font-size: 0.78rem; color: var(--text-dim); }
+  .tension-members { display: flex; justify-content: space-between; font-size: 0.75rem; margin: 8px 0 4px; }
+  .tension-hawk { color: var(--red); text-align: left; }
+  .tension-center { color: var(--text-dim); text-align: center; }
+  .tension-dove { color: var(--green); text-align: right; }
+
+  /* Archetype distribution */
+  .archetype-grid { display: flex; gap: 12px; margin: 16px 0; }
+  .archetype-item { 
+    flex:1;
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
+    border: 1px solid var(--border);
+  }
+  .archetype-item .count { font-size: 2rem; font-weight: 700; }
+  .archetype-item .type { font-size: 0.82rem; color: var(--text-dim); margin-top: 4px; }
+
+  /* Table */
+  table { width:100%; border-collapse: collapse; font-size: 0.88rem; }
+  th { text-align: left; color: var(--text-dim); font-weight: 500; padding: 10px 12px; border-bottom: 1px solid var(--border); font-size: 0.78rem; }
+  td { padding: 10px 12px; border-bottom: 1px solid var(--border); }
+  tr:last-child td { border-bottom: none; }
+
+  /* Summary grid */
+  .summary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .summary-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+  }
+  .summary-card h4 { font-size: 0.95rem; margin-bottom: 12px; }
+  .summary-card .metric { margin-bottom: 10px; display: flex; justify-content: space-between; }
+  .summary-card .metric-name { color: var(--text-dim); font-size: 0.85rem; }
+  .summary-card .metric-val { font-weight: 600; }
+
+  .footer {
+    text-align: center;
+    padding: 32px 0;
+    color: var(--text-dim);
+    font-size: 0.78rem;
+    border-top: 1px solid var(--border);
+    margin-top: 48px;
+  }
+
+  .disclaimer {
+    color: var(--yellow);
+    font-size: 0.8rem;
+    margin-top: 8px;
+  }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    .prediction-banner { flex-direction: column; text-align: center; }
+    .prediction-details { justify-content: center; }
+    .summary-grid { grid-template-columns: 1fr; }
+    .data-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <h1>🏛️ FedSight AI — FOMC 利率预测</h1>
+    <div class="subtitle">Multi-Agent Simulation &bull; FRED Real-time Data &bull; 2026年7月28日</div>
+    <div class="badge">7:0 全票通过 &bull; 置信度 HIGH</div>
+  </div>
+
+  <!-- Prediction Banner -->
+  <div class="prediction-banner">
+    <div class="prediction-icon">⚖️</div>
+    <div class="prediction-content">
+      <h2>预测: HOLD — 维持利率不变</h2>
+      <p style="color:var(--text-dim);font-size:0.9rem;">联邦基金利率目标区间维持 3.50%–3.75%</p>
+      <div class="prediction-details">
+        <div class="prediction-item">
+          <div class="value">+0 bps</div>
+          <div class="label">预期变动</div>
+        </div>
+        <div class="prediction-item">
+          <div class="value">7 : 0</div>
+          <div class="label">投票一致</div>
+        </div>
+        <div class="prediction-item">
+          <div class="value">HIGH</div>
+          <div class="label">置信度</div>
+        </div>
+        <div class="prediction-item">
+          <div class="value">Warsh</div>
+          <div class="label">主席（新任）</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Macro Data -->
+  <div class="section">
+    <h3>📡 实时宏观数据 <span style="font-size:0.7rem;color:var(--text-dim);font-weight:400;">来源: FRED API + FedWatch</span></h3>
+    <div class="data-grid">
+      <div class="data-card">
+        <div class="label">核心PCE YoY</div>
+        <div class="value warn">3.41%</div>
+        <div class="sub">vs 2% 目标 · 2026-05</div>
+      </div>
+      <div class="data-card">
+        <div class="label">PCE YoY</div>
+        <div class="value warn">4.07%</div>
+        <div class="sub">vs 2% 目标 · 2026-05</div>
+      </div>
+      <div class="data-card">
+        <div class="label">CPI YoY</div>
+        <div class="value warn">3.46%</div>
+        <div class="sub">2026-06</div>
+      </div>
+      <div class="data-card">
+        <div class="label">失业率</div>
+        <div class="value neutral">4.3%</div>
+        <div class="sub">U3 · 2026-06</div>
+      </div>
+      <div class="data-card">
+        <div class="label">联邦基金利率</div>
+        <div class="value">3.75%</div>
+        <div class="sub">上限 · 2026-07-27</div>
+      </div>
+      <div class="data-card">
+        <div class="label">10年国债</div>
+        <div class="value neutral">4.30%</div>
+        <div class="sub">2026-07-24</div>
+      </div>
+      <div class="data-card">
+        <div class="label">2s10s利差</div>
+        <div class="value good">+0.70%</div>
+        <div class="sub">正常曲线 ✓</div>
+      </div>
+      <div class="data-card">
+        <div class="label">实际利率</div>
+        <div class="value">+0.18%</div>
+        <div class="sub">3mT - 核心PCE</div>
+      </div>
+      <div class="data-card">
+        <div class="label">VIX</div>
+        <div class="value">18.84</div>
+        <div class="sub">波动率指数</div>
+      </div>
+      <div class="data-card">
+        <div class="label">时薪同比</div>
+        <div class="value">3.52%</div>
+        <div class="sub">2026-06</div>
+      </div>
+      <div class="data-card">
+        <div class="label">非农同比</div>
+        <div class="value">+0.32%</div>
+        <div class="sub">2026-06</div>
+      </div>
+      <div class="data-card">
+        <div class="label">期货隐含利率</div>
+        <div class="value good">3.64%</div>
+        <div class="sub">FRED FF · HOLD预期</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Market Expectation -->
+  <div class="section">
+    <h3>🏦 市场利率预期</h3>
+    <div class="summary-grid">
+      <div class="summary-card">
+        <h4>CME FedWatch / FRED FF</h4>
+        <div class="metric">
+          <span class="metric-name">期货隐含利率</span>
+          <span class="metric-val">3.64%</span>
+        </div>
+        <div class="metric">
+          <span class="metric-name">当前有效利率 (DFF)</span>
+          <span class="metric-val">3.63%</span>
+        </div>
+        <div class="metric">
+          <span class="metric-name">差值</span>
+          <span class="metric-val" style="color:var(--green);">+0.01%</span>
+        </div>
+        <div class="metric">
+          <span class="metric-name">市场主导预期</span>
+          <span class="metric-val" style="color:var(--accent);">HOLD (维持不变)</span>
+        </div>
+      </div>
+      <div class="summary-card">
+        <h4>关键矛盾</h4>
+        <div class="metric">
+          <span class="metric-name">通胀</span>
+          <span class="metric-val" style="color:var(--yellow);">3.41% → 不支持降息</span>
+        </div>
+        <div class="metric">
+          <span class="metric-name">就业</span>
+          <span class="metric-val" style="color:var(--green);">4.3% → 不支持加息</span>
+        </div>
+        <div class="metric">
+          <span class="metric-name">收益率曲线</span>
+          <span class="metric-val" style="color:var(--green);">恢复正利差</span>
+        </div>
+        <div class="metric">
+          <span class="metric-name">实际利率</span>
+          <span class="metric-val" style="color:var(--accent);">+0.18% → 接近中性</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Vote Distribution -->
+  <div class="section">
+    <h3>🗳️ 投票分布</h3>
+    <div class="vote-bar-container">
+      <div class="vote-bar-dove" style="width:0%"></div>
+      <div class="vote-bar-hold" style="width:100%"></div>
+      <div class="vote-bar-hawk" style="width:0%"></div>
+    </div>
+    <div class="vote-legend">
+      <span><span class="dot" style="background:var(--green);"></span> 🕊️ CUT: 0票 (0%)</span>
+      <span><span class="dot" style="background:var(--accent);"></span> ⚖️ HOLD: 7票 (100%)</span>
+      <span><span class="dot" style="background:var(--red);"></span> 🦅 HIKE: 0票 (0%)</span>
+    </div>
+
+    <!-- Archetype Distribution -->
+    <h4 style="margin-top:20px;font-size:0.9rem;">理事会原型分布</h4>
+    <div class="archetype-grid">
+      <div class="archetype-item" style="background:rgba(88,166,255,0.04);">
+        <div class="count" style="color:var(--accent);">3</div>
+        <div class="type">⭐ 中央决策者<br><span style="font-size:0.7rem;">Warsh · Powell · Waller</span></div>
+      </div>
+      <div class="archetype-item" style="background:rgba(163,113,247,0.04);">
+        <div class="count" style="color:var(--purple);">3</div>
+        <div class="type">🎓 学术平衡派<br><span style="font-size:0.7rem;">Jefferson · Barr · Cook</span></div>
+      </div>
+      <div class="archetype-item" style="background:rgba(219,109,40,0.04);">
+        <div class="count" style="color:var(--orange);">1</div>
+        <div class="type">🏛 区域务实派<br><span style="font-size:0.7rem;">Bowman</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Individual Votes -->
+  <div class="section">
+    <h3>📋 委员投票详情</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>委员</th>
+          <th>角色</th>
+          <th>原型</th>
+          <th>投票</th>
+          <th>态度倾向</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Kevin Warsh</strong></td>
+          <td>Chair 🆕</td>
+          <td>⭐ 决策者</td>
+          <td><span class="voting-tag tag-hold">HOLD</span></td>
+          <td style="color:var(--yellow);">中性偏鹰</td>
+        </tr>
+        <tr>
+          <td><strong>Philip Jefferson</strong></td>
+          <td>Vice Chair</td>
+          <td>🎓 学术派</td>
+          <td><span class="voting-tag tag-hold">HOLD</span></td>
+          <td style="color:var(--accent);">中性</td>
+        </tr>
+        <tr>
+          <td><strong>Michelle Bowman</strong></td>
+          <td>VC Supervision</td>
+          <td>🏛 务实派</td>
+          <td><span class="voting-tag tag-hold">HOLD</span></td>
+          <td style="color:var(--red);">🦅 保留异议权</td>
+        </tr>
+        <tr>
+          <td><strong>Michael Barr</strong></td>
+          <td>Governor</td>
+          <td>🎓 学术派</td>
+          <td><span class="voting-tag tag-hold">HOLD</span></td>
+          <td style="color:var(--accent);">中性</td>
+        </tr>
+        <tr>
+          <td><strong>Lisa Cook</strong></td>
+          <td>Governor</td>
+          <td>🎓 学术派</td>
+          <td><span class="voting-tag tag-hold">HOLD</span></td>
+          <td style="color:var(--green);">中性偏鸽</td>
+        </tr>
+        <tr>
+          <td><strong>Jerome Powell</strong></td>
+          <td>Governor</td>
+          <td>⭐ 决策者</td>
+          <td><span class="voting-tag tag-hold">HOLD</span></td>
+          <td style="color:var(--yellow);">中性偏鹰</td>
+        </tr>
+        <tr>
+          <td><strong>Christopher Waller</strong></td>
+          <td>Governor</td>
+          <td>⭐ 决策者</td>
+          <td><span class="voting-tag tag-hold">HOLD</span></td>
+          <td style="color:var(--accent);">中性</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Tension Analysis -->
+  <div class="section">
+    <h3>🔥 内部张力分析</h3>
+    <div class="tension-members">
+      <span class="tension-hawk">🦅 Bowman<br>"PCE 4.07% 危险信号"</span>
+      <span class="tension-center">⚖️ Warsh · Powell · Barr<br>"让数据说话"</span>
+      <span class="tension-dove">🕊️ Cook · Waller<br>"10y已在紧缩"</span>
+    </div>
+    <div class="tension-bar">
+      <div class="tension-fill" style="width:100%; background: linear-gradient(90deg, #f85149 0%, #f85149 14%, #58a6ff 14%, #58a6ff 71%, #3fb950 71%, #3fb950 100%);"></div>
+    </div>
+    <div class="tension-labels">
+      <span>🦅 鹰派</span>
+      <span>⚖️ 中性</span>
+      <span>🕊️ 鸽派</span>
+    </div>
+    <p style="font-size:0.85rem;color:var(--text-dim);margin-top:16px;">
+      ⚠️ 虽然投票一致，但声明加入了鹰派措辞——<em>"prepared to adjust...should inflation not improve."</em>
+      如果 Q3 通胀数据（7月底发布）显示核心PCE继续高于3.5%，Bowman可能在9月会议上正式提出异议。
+    </p>
+  </div>
+
+  <!-- Statement -->
+  <div class="section">
+    <h3>📝 模拟 FOMC 声明</h3>
+    <div class="statement">
+      <p><strong>Federal Reserve Press Release</strong><br>July 28, 2026</p>
+      <p>Recent indicators suggest that economic activity has continued to expand at a moderate pace. The unemployment rate has stabilized near 4.3%, and labor market conditions remain broadly balanced.</p>
+      <p>Inflation remains elevated. Core PCE inflation registered 3.41% over the twelve months, well above the Committee's 2% objective. While inflation has declined from its 2022 peak, progress has stalled in recent quarters, warranting continued vigilance.</p>
+      <p>The Committee decided to <strong>maintain the target range for the federal funds rate at 3.50 to 3.75 percent</strong>. The incoming data suggest that the current stance of monetary policy is appropriately calibrated to balance the risks of persistent inflation against the risk of undue economic slowing.</p>
+      <p>The Committee remains highly attentive to inflation risks. Should incoming data indicate that inflation is not on a sustainable path toward 2%, the Committee would be prepared to adjust the stance of monetary policy accordingly.</p>
+      <p>In assessing the appropriate stance, the Committee will continue to monitor labor market conditions, inflation expectations, and international developments.</p>
+    </div>
+  </div>
+
+  <!-- Historical Comparison -->
+  <div class="section">
+    <h3>🔄 与上次模拟对比</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>维度</th>
+          <th>上次 (Powell 主席)</th>
+          <th>本次 (Warsh 主席)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>主席</td>
+          <td>Jerome Powell</td>
+          <td style="color:var(--accent);"><strong>Kevin Warsh 🆕</strong></td>
+        </tr>
+        <tr>
+          <td>Powell 角色</td>
+          <td>Chair</td>
+          <td style="color:var(--text-dim);">Governor (普通理事)</td>
+        </tr>
+        <tr>
+          <td>鹰派压力</td>
+          <td>Bowman 1人</td>
+          <td style="color:var(--yellow);"><strong>Bowman保留异议权 + Warsh偏鹰声明</strong></td>
+        </tr>
+        <tr>
+          <td>声明基调</td>
+          <td>中性等待</td>
+          <td style="color:var(--yellow);"><strong>偏鹰 — "准备进一步收紧"</strong></td>
+        </tr>
+        <tr>
+          <td>投票结果</td>
+          <td>5:0 HOLD</td>
+          <td>7:0 HOLD</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>FedSight AI — Multi-Agent FOMC Simulation System</p>
+    <p>数据来源: FRED API (federalreserve.gov) · 理事会资料: federalreservehistory.org</p>
+    <p>基于 Hou et al. (2025) "FedSight AI: Multi-Agent System for Federal Funds Target Rate Prediction" · NeurIPS 2025 Workshop</p>
+    <p class="disclaimer">⚠️ 本报告由AI多Agent系统模拟生成，仅供研究参考，不构成任何投资建议。</p>
+  </div>
+
+</div>
+
+</body>
+</html>
