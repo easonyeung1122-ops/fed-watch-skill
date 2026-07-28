@@ -160,7 +160,7 @@ class FedDataFetcher:
                     values.append(float(obs["value"]))
                     dates.append(obs["date"])
             series = pd.Series(values, index=pd.to_datetime(dates))
-            series.sort_index(inplace=True)  # 升序排列
+            series.sort_index(ascending=False, inplace=True)  # 降序：最新在前
             return series
         except Exception as e:
             print(f"  [WARN] FRED {series_id} fetch failed: {e}")
