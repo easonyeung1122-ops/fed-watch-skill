@@ -1,273 +1,248 @@
-# **`README.md`**
+# 🏛️ FedSight AI — FOMC Rate Prediction Skill
 
-# FedSight AI: Multi-Agent System Architecture for Federal Funds Target Rate Prediction
+> 基于多Agent系统的FOMC利率预测Skill，接入FRED实时宏观数据 + CME FedWatch市场预期  
+> Multi-agent FOMC simulation with real-time FRED macro data + CME FedWatch market expectations
 
-<!-- PROJECT SHIELDS -->
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Python Version](https://img.shields.io/badge/python-3.9%2B-blue.svg)](https://www.python.org/)
-[![arXiv](https://img.shields.io/badge/arXiv-2512.15728v1-b31b1b.svg)](https://arxiv.org/abs/2512.15728v1)
-[![Journal](https://img.shields.io/badge/Journal-ArXiv%20Preprint-003366)](https://arxiv.org/abs/2512.15728v1)
-[![Workshop](https://img.shields.io/badge/Workshop-NeurIPS%202025%20GenAI%20in%20Finance-purple)](https://neurips.cc/)
-[![Year](https://img.shields.io/badge/Year-2025-purple)](https://github.com/chirindaopensource/multi_agent_system_architecture_for_federal_funds_target_rate_prediction)
-[![Discipline](https://img.shields.io/badge/Discipline-Computational%20Finance%20%7C%20Macroeconomics-00529B)](https://github.com/chirindaopensource/multi_agent_system_architecture_for_federal_funds_target_rate_prediction)
-[![Data Sources](https://img.shields.io/badge/Data-FRED%20(St.%20Louis%20Fed)-lightgrey)](https://fred.stlouisfed.org/)
-[![Data Sources](https://img.shields.io/badge/Data-Federal%20Reserve%20Board-lightgrey)](https://www.federalreserve.gov/)
-[![Core Method](https://img.shields.io/badge/Method-Multi--Agent%20Simulation-orange)](https://github.com/chirindaopensource/multi_agent_system_architecture_for_federal_funds_target_rate_prediction)
-[![Analysis](https://img.shields.io/badge/Analysis-Chain--of--Draft%20Reasoning-red)](https://github.com/chirindaopensource/multi_agent_system_architecture_for_federal_funds_target_rate_prediction)
-[![Validation](https://img.shields.io/badge/Validation-In--Context%20Learning-green)](https://github.com/chirindaopensource/multi_agent_system_architecture_for_federal_funds_target_rate_prediction)
-[![Robustness](https://img.shields.io/badge/Robustness-Backtesting%20(2023--2024)-yellow)](https://github.com/chirindaopensource/multi_agent_system_architecture_for_federal_funds_target_rate_prediction)
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-[![Type Checking: mypy](https://img.shields.io/badge/type%20checking-mypy-blue)](http://mypy-lang.org/)
-[![NumPy](https://img.shields.io/badge/numpy-%23013243.svg?style=flat&logo=numpy&logoColor=white)](https://numpy.org/)
-[![Pandas](https://img.shields.io/badge/pandas-%23150458.svg?style=flat&logo=pandas&logoColor=white)](https://pandas.pydata.org/)
-[![Scikit-Learn](https://img.shields.io/badge/scikit--learn-%23F7931E.svg?style=flat&logo=scikit-learn&logoColor=white)](https://scikit-learn.org/)
-[![OpenAI](https://img.shields.io/badge/OpenAI-%23412991.svg?style=flat&logo=openai&logoColor=white)](https://openai.com/)
-[![Jupyter](https://img.shields.io/badge/Jupyter-%23F37626.svg?style=flat&logo=Jupyter&logoColor=white)](https://jupyter.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Python 3.9+](https://img.shields.io/badge/python-3.9%2B-blue.svg)](https://www.python.org/)
+[![CodeBuddy Skill](https://img.shields.io/badge/CodeBuddy-Skill-green)](https://www.codebuddy.ai/)
 
-**Repository:** `https://github.com/chirindaopensource/multi_agent_system_architecture_for_federal_funds_target_rate_prediction`
+---
 
-**Owner:** 2025 Craig Chirinda (Open Source Projects)
+## 📖 简介 / Overview
 
-This repository contains an **independent**, professional-grade Python implementation of the research methodology from the 2025 paper entitled **"FedSight AI: Multi-Agent System Architecture for Federal Funds Target Rate Prediction"** by:
+FedSight AI 是一个 AI 驱动的 FOMC（美联储公开市场委员会）利率决策模拟系统。它利用多个 LLM Agent 分别扮演分析师、经济学家和 FOMC 投票委员，通过 Chain-of-Draft 推理链进行辩论和投票，最终输出利率预测报告。
 
-*   **Yuhan Hou** (Duke University)
-*   **Tianji Rao** (Duke University; BNY AI Hub)
-*   **Jeremy Matthew Tan** (Duke University)
-*   **Adler Viton** (Duke University; BNY AI Hub)
-*   **Xiyue Zhang** (Duke University)
-*   **David Ye** (Duke University)
-*   **Abhishek Kodi** (BNY AI Hub)
-*   **Sanjana Dulam** (BNY AI Hub)
-*   **Aditya Paul** (BNY AI Hub)
-*   **YiKai Feng** (BNY AI Hub)
+FedSight AI is an AI-powered FOMC (Federal Open Market Committee) rate decision simulation system. It uses multiple LLM agents playing the roles of Analyst, Economist, and FOMC voting members to debate and vote via Chain-of-Draft reasoning, producing a rate prediction report.
 
-The project provides a complete, end-to-end computational framework for replicating the paper's findings. It delivers a modular, auditable, and extensible pipeline that executes the entire research workflow: from the ingestion and cleansing of macroeconomic indicators and unstructured narratives to the rigorous simulation of FOMC deliberations via Large Language Models (LLMs), culminating in accurate interest rate forecasts.
+**论文 / Paper**: Hou et al. (2025) "FedSight AI: Multi-Agent System Architecture for Federal Funds Target Rate Prediction" — NeurIPS 2025 Workshop
 
-## Table of Contents
+---
 
-- [Introduction](#introduction)
-- [Theoretical Background](#theoretical-background)
-- [Features](#features)
-- [Methodology Implemented](#methodology-implemented)
-- [Core Components (Notebook Structure)](#core-components-notebook-structure)
-- [Key Callable: `execute_full_study_lifecycle`](#key-callable-execute_full_study_lifecycle)
-- [Prerequisites](#prerequisites)
-- [Installation](#installation)
-- [Input Data Structure](#input-data-structure)
-- [Usage](#usage)
-- [Output Structure](#output-structure)
-- [Project Structure](#project-structure)
-- [Customization](#customization)
-- [Contributing](#contributing)
-- [Recommended Extensions](#recommended-extensions)
-- [License](#license)
-- [Citation](#citation)
-- [Acknowledgments](#acknowledgments)
+## 🎯 核心功能 / Key Features
 
-## Introduction
+| 功能 Feature | 说明 Description |
+|-------------|-----------------|
+| 📡 **实时数据 / Real-time Data** | FRED API 获取14项宏观指标（PCE/CPI/就业/利率/VIX），自动计算同比 / 14 FRED macro indicators with auto YoY calculation |
+| 🏦 **市场预期 / Market Expectations** | FRED FF + yfinance ZQ 期货获取隐含利率预期 / Implied rate from futures |
+| 👥 **真实理事会 / Real Board** | 每次启动自动从 federalreservehistory.org 获取最新FOMC理事会成员 / Auto-fetches current Board members |
+| 🧠 **多Agent投票 / Multi-Agent Voting** | Analyst → Economist → FOMC委员（7人）× Chain-of-Draft推理 → 投票 / 7 Governors × CoD reasoning → vote |
+| 📊 **原型分类 / Archetypes** | 三种FOMC原型：⭐决策者 / 🎓学术派 / 🏛务实派 / 3 archetypes: Central Policymaker, Academic Balancer, Regional Pragmatist |
+| 📝 **模拟声明 / Simulated Statement** | 自动起草FOMC官方声明 / Auto-generate FOMC press release |
+| 📄 **HTML报告 / HTML Report** | 深色主题精美HTML预测报告 / Dark-themed HTML prediction report |
+| 🔌 **CodeBuddy Skill** | 一键安装为CodeBuddy技能，对话即可触发 / Install as CodeBuddy Skill, trigger via chat |
 
-This project provides a Python implementation of the analytical framework presented in Hou et al. (2025). The core of this repository is the iPython Notebook `multi_agent_system_architecture_for_federal_funds_target_rate_prediction_draft.ipynb`, which contains a comprehensive suite of functions to replicate the paper's findings. The pipeline is designed to simulate the deliberative institutional process of the Federal Open Market Committee (FOMC), moving beyond black-box forecasting to provide interpretable, reasoning-based predictions.
+---
 
-The paper addresses the challenge of forecasting monetary policy in a complex economic environment where decisions reflect diverse philosophies and regional concerns. This codebase operationalizes the paper's framework, allowing users to:
--   Rigorously validate and manage the entire experimental configuration via a single `config.yaml` file.
--   Cleanse and normalize structured macroeconomic data (e.g., inflation, employment) and unstructured narratives (e.g., Beige Book, Dot Plots).
--   Construct canonical "meeting packets" that strictly enforce information cutoffs to prevent look-ahead bias.
--   Simulate FOMC deliberations using a multi-agent system (MAS) with distinct roles (Analyst, Economist, Members).
--   Implement advanced reasoning protocols including Chain-of-Draft (CoD) and In-Context Learning (ICL).
--   Evaluate performance using rigorous metrics such as Total Accuracy, Agent Accuracy, Voting Stability, and Semantic Similarity.
+## 🚀 快速开始 / Quick Start
 
-## Theoretical Background
+### 1. 克隆仓库 / Clone
 
-The implemented methods combine techniques from Multi-Agent Systems, Natural Language Processing, and Financial Economics.
-
-**1. Multi-Agent System (MAS) Simulation:**
-The FOMC decision-making process is modeled as a collaborative workflow among heterogeneous agents.
--   **Analyst:** Interprets market signals (Fed Funds Futures).
--   **Economist:** Formulates policy options based on macro data.
--   **Members:** Deliberate and vote based on their specific archetypes (Regional Pragmatists, Academic Balancers, Central Policymakers).
-
-**2. Chain-of-Draft (CoD) Reasoning:**
-To improve reasoning quality and reduce hallucinations, member agents operate under a CoD protocol. This enforces concise, multi-stage reasoning steps (e.g., $\le 30$ words per step) followed by a revision phase, ensuring that the final vote is grounded in a logical progression.
-
-**3. In-Context Learning (ICL):**
-Agents are "trained" by simulating historical meetings (e.g., 2019, 2022). They vote, receive the ground truth outcome, and generate "lessons learned" which are stored in a long-term memory vector store. These lessons are retrieved and injected into the context during inference to guide future decisions.
-
-**4. Unsupervised Clustering of Archetypes:**
-Historical FOMC participants are clustered using K-Means based on features like hawkishness, regional affiliation, and policy focus. The resulting centroids define the "System Personas" adopted by the simulated member agents.
-
-Below is a diagram which summarizes the proposed approach:
-
-<div align="center">
-  <img src="https://github.com/chirindaopensource/multi_agent_system_architecture_for_federal_funds_target_rate_prediction/blob/main/multi_agent_system_architecture_for_federal_funds_target_rate_prediction_summary_three.png" alt="FedSight AI Architecture Summary" width="100%">
-</div>
-
-## Features
-
-The provided iPython Notebook (`multi_agent_system_architecture_for_federal_funds_target_rate_prediction_draft.ipynb`) implements the full research pipeline, including:
-
--   **Modular, Multi-Task Architecture:** The pipeline is decomposed into 30 distinct, modular tasks, each with its own orchestrator function.
--   **Configuration-Driven Design:** All study parameters (LLM settings, simulation rules, data schemas) are managed in an external `config.yaml` file.
--   **Rigorous Data Validation:** A multi-stage validation process checks schema integrity, type coercion feasibility, and temporal alignment.
--   **Deterministic Execution:** Enforces reproducibility through seed control, deterministic sorting, and rigorous logging of all stochastic outputs.
--   **Comprehensive Evaluation:** Computes a suite of metrics including Accuracy (93.75% reported), Stability (93.33% reported), and Semantic Similarity.
--   **Reproducible Artifacts:** Generates structured dictionaries, serializable outputs, and cryptographic manifests for every intermediate result.
-
-## Methodology Implemented
-
-The core analytical steps directly implement the methodology from the paper:
-
-1.  **Validation & Cleansing (Tasks 1-5):** Ingests raw macro and narrative data, validates schemas, enforces the "two-days-prior" cutoff, and normalizes text.
-2.  **Packet Construction (Tasks 6-8):** Joins data into canonical meeting packets, verbalizes Dot Plots, and bundles context for agents.
-3.  **Agent Engineering (Tasks 9-12):** Clusters participants to define archetypes, configures the LLM client with retry logic, and defines the CrewAI architecture.
-4.  **Simulation Execution (Tasks 13-18):** Runs the multi-agent workflow across three variants (Baseline, ICL, CoD), enforcing protocols like CoD constraints and ICL memory injection.
-5.  **Storage & Provenance (Task 19):** Persists simulation artifacts to a SQLite database with full provenance tracking.
-6.  **Metric Computation (Tasks 21-27):** Calculates Total Accuracy, Agent Accuracy, Voting Stability, Semantic Similarity, Average Tokens, and MAE.
-7.  **Reporting & Archiving (Tasks 28-30):** Generates the final results table, packages artifacts for reproducibility, and signs off on the study completion.
-
-## Core Components (Notebook Structure)
-
-The notebook is structured as a logical pipeline with modular orchestrator functions for each of the 30 major tasks. All functions are self-contained, fully documented with type hints and docstrings, and designed for professional-grade execution.
-
-## Key Callable: `execute_full_study_lifecycle`
-
-The project is designed around a single, top-level user-facing interface function:
-
--   **`execute_full_study_lifecycle`:** This master orchestrator function runs the entire automated research pipeline from end-to-end. A single call to this function reproduces the entire computational portion of the project, managing data flow between cleansing, simulation, and evaluation modules.
-
-## Prerequisites
-
--   Python 3.9+
--   Core dependencies: `pandas`, `numpy`, `scikit-learn`, `openai`, `crewai`, `pyyaml`, `nest_asyncio`.
-
-## Installation
-
-1.  **Clone the repository:**
-    ```sh
-    git clone https://github.com/chirindaopensource/multi_agent_system_architecture_for_federal_funds_target_rate_prediction.git
-    cd multi_agent_system_architecture_for_federal_funds_target_rate_prediction
-    ```
-
-2.  **Create and activate a virtual environment (recommended):**
-    ```sh
-    python -m venv venv
-    source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
-    ```
-
-3.  **Install Python dependencies:**
-    ```sh
-    pip install pandas numpy scikit-learn openai crewai pyyaml nest_asyncio
-    ```
-
-## Input Data Structure
-
-The pipeline requires five primary DataFrames:
-1.  **`df_macro_raw`**: Structured macroeconomic indicators (Inflation, Employment, Yields).
-2.  **`df_unstructured_raw`**: Narrative texts (Beige Book, FedWatch) and Dot Plot distributions.
-3.  **`df_participants_raw`**: Metadata for historical FOMC participants (for clustering).
-4.  **`df_meeting_outcomes`**: Ground truth decisions (FFTR change in bps).
-5.  **`df_fomc_statements_actual`**: Official FOMC statements for semantic comparison.
-
-## Usage
-
-The notebook provides a complete, step-by-step guide. The primary workflow is to execute the final cell, which demonstrates how to use the top-level `execute_full_study_lifecycle` orchestrator:
-
-```python
-# Final cell of the notebook
-
-# This block serves as the main entry point for the entire project.
-if __name__ == '__main__':
-    # 1. Load the master configuration from the YAML file.
-    import yaml
-    with open('config.yaml', 'r') as f:
-        config = yaml.safe_load(f)
-    
-    # 2. Load raw datasets (Example using synthetic generator provided in the notebook)
-    # In production, load from CSV/Parquet: pd.read_csv(...)
-    (df_macro, df_unstruct, df_parts, df_outcomes, df_statements) = generate_synthetic_datasets()
-    
-    # 3. Execute the entire replication study.
-    results = execute_full_study_lifecycle(
-        df_macro_raw=df_macro,
-        df_unstructured_raw=df_unstruct,
-        df_participants_raw=df_parts,
-        df_meeting_outcomes=df_outcomes,
-        df_fomc_statements_actual=df_statements,
-        config=config,
-        output_dir="fedsight_reproduction_output"
-    )
-    
-    # 4. Access results
-    if results['final_status']['final_verdict'] == 'SUCCESS':
-        print(results['pipeline_results']['reports']['formatted_results'])
+```bash
+git clone https://github.com/easonyeung1122-ops/fed-watch-skill.git
+cd fed-watch-skill
 ```
 
-## Output Structure
+### 2. 安装依赖 / Install Dependencies
 
-The pipeline returns a dictionary containing:
--   **`pipeline_results`**: A `FedSightResults` object with all artifacts, metrics, and the execution ledger.
--   **`reproducibility_paths`**: A dictionary mapping component names to their file paths in the reproduction package.
--   **`final_status`**: A completion record with timestamps and verification verdicts.
+```bash
+pip install pandas numpy openai requests beautifulsoup4 fredapi python-dotenv rich pyyaml yfinance
+```
 
-## Project Structure
+### 3. 配置 API Keys / Configure
+
+```bash
+cp .env.example .env
+```
+
+编辑 `.env` 文件 / Edit `.env`:
+
+```ini
+# 必需 / Required: OpenAI API Key（用于多Agent模拟 / for multi-agent simulation）
+OPENAI_API_KEY=sk-your-key-here
+
+# 可选 / Optional: FRED API Key（用于实时宏观数据 / for real-time macro data）
+# 免费注册 / Free registration: https://fred.stlouisfed.org/docs/api/api_key.html
+FRED_API_KEY=your_fred_api_key_here
+
+# 可选 / Optional: 用国产模型降低成本 / Use domestic models to reduce cost
+# LLM_MODEL=deepseek-chat
+# OPENAI_BASE_URL=https://api.deepseek.com
+```
+
+### 4. 运行 / Run
+
+```bash
+# 完整模拟 / Full simulation（需要 FRED_API_KEY + OPENAI_API_KEY）
+python run_fed_watch.py --members 7 --output report.md
+
+# 仅查看实时宏观数据 / View real-time macro data only
+python fed_data.py
+
+# 手动输入模式 / Manual input mode（无需 FRED Key / No FRED key needed）
+python run_fed_watch.py --no-live --members 5
+```
+
+### 5. 作为 CodeBuddy Skill 安装 / Install as CodeBuddy Skill
+
+```bash
+# 复制到 CodeBuddy skills 目录 / Copy to CodeBuddy skills directory
+mkdir -p ~/.codebuddy/skills/fed-watch
+cp -r * ~/.codebuddy/skills/fed-watch/
+```
+
+然后在 CodeBuddy 对话中直接说：/ Then just say in CodeBuddy chat:
+- "预测美联储利率" / "Predict Fed rate"
+- "下一次FOMC会议" / "Next FOMC meeting"
+
+---
+
+## 🧠 架构 / Architecture
 
 ```
-multi_agent_system_architecture_for_federal_funds_target_rate_prediction/
+┌─────────────────────────────────────────────────────────┐
+│                    数据层 / Data Layer                    │
+│  FRED API (14 indicators)  │  yfinance ZQ futures       │
+│  federalreservehistory.org  │  Board auto-updater       │
+└─────────────────────────────────────────────────────────┘
+                           ↓
+┌─────────────────────────────────────────────────────────┐
+│                  模拟层 / Simulation Layer                │
+│                                                         │
+│  Step 1: Analyst         →  解读市场信号 / Market read    │
+│  Step 2: Economist       →  提出3个政策选项 / 3 options   │
+│  Step 3: FOMC Members×7  →  Chain-of-Draft 推理+投票     │
+│  Step 4: Statement       →  起草FOMC声明 / Press release │
+│                                                         │
+│  Archetypes / 原型:                                       │
+│  ⭐ Central Policymaker   →  共识+稳定 / Consensus        │
+│  🎓 Academic Balancer    →  理论+模型 / Theory-driven     │
+│  🏛 Regional Pragmatist  →  数据+务实 / Data-pragmatic    │
+└─────────────────────────────────────────────────────────┘
+                           ↓
+┌─────────────────────────────────────────────────────────┐
+│                  输出层 / Output Layer                    │
+│  Markdown Report  │  HTML Report  │  JSON Results        │
+└─────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 📊 输出示例 / Sample Output
+
+```
+════════════════════════════════════════════
+  🏛️  FedSight AI — FOMC 利率预测
+  2026-07-28 | Chair: Kevin Warsh
+════════════════════════════════════════════
+
+  📡 宏观数据 / Macro Data
+  PCE YoY: 4.07% | Core PCE: 3.41% | CPI: 3.46%
+  Unemployment: 4.3% | Fed Rate: 3.75%
+  10y: 4.30% | 2s10s: +0.70% (normal)
+
+  🏦 市场预期 / Market
+  Implied: 3.64% vs Current: 3.63% → HOLD
+
+  🗳️ 投票 / Vote
+  ⚖️ HOLD: 7 (100%)
+  🕊️ CUT:  0 (0%)
+  🦅 HIKE: 0 (0%)
+
+  🏁 预测 / Prediction: HOLD (+0 bps) | Confidence: HIGH
+```
+
+---
+
+## 📁 项目结构 / Project Structure
+
+```
+fed-watch-skill/
+├── SKILL.md                # CodeBuddy Skill 定义 / Skill definition
+├── README.md               # 本文件 / This file
+├── .env.example            # API Key 配置模板 / API key template
+├── .gitignore
 │
-├── multi_agent_system_architecture_for_federal_funds_target_rate_prediction_draft.ipynb  # Main implementation notebook
-├── config.yaml                                                                           # Master configuration file
-├── requirements.txt                                                                      # Python package dependencies
+├── fed_data.py             # FRED + FedWatch 数据获取 / Data fetching
+├── fed_sim.py              # 多Agent FOMC模拟引擎 / Simulation engine
+├── fetch_board.py          # 理事会成员自动更新 / Board auto-updater
+├── run_fed_watch.py        # 主入口 / Main entry point
 │
-├── LICENSE                                                                               # MIT Project License File
-└── README.md                                                                             # This file
+├── fomc_report.html        # HTML 预测报告 / HTML prediction report
+├── test_apis.py            # API 测试 / API test
+├── test_board_update.py    # 理事会更新测试 / Board update test
+├── check_members.py        # 成员名单检查 / Member list check
+│
+├── config.yaml             # 原始项目配置 / Original project config
+├── requirements.txt        # 原始项目依赖 / Original requirements
+└── LICENSE                 # MIT License
 ```
 
-## Customization
+---
 
-The pipeline is highly customizable via the `config.yaml` file. Users can modify study parameters such as:
--   **LLM Settings:** `model_name`, `temperature`, `max_tokens`.
--   **Simulation:** `runs_per_meeting`, `vote_aggregation_rule`.
--   **Preprocessing:** `cod_max_words_per_step`, `dot_plot_missing_policy`.
--   **ICL:** `training_meetings`, `memory_retrieval_policy`.
+## 🛠️ 可用场景 / Scenarios
 
-## Contributing
+通过 `.env` 设置 `FOMC_CHAIR` 环境变量切换主席情景 / Switch Chair scenario via `FOMC_CHAIR` env var:
 
-Contributions are welcome. Please fork the repository, create a feature branch, and submit a pull request with a clear description of your changes. Adherence to PEP 8, type hinting, and comprehensive docstrings is required.
+| 情景 Scenario | Chair | 描述 Description |
+|:--|------|------|
+| `waller` | Chris Waller | R白宫+市场导向 / Market-oriented |
+| `bowman` | Michelle Bowman | R白宫+鹰派务实 / Hawkish pragmatist |
+| `powell_governor` | Powell (临时/Acting) | 过渡期 / Transition period |
+| `jefferson` | Philip Jefferson | D白宫+学术派 / Academic |
 
-## Recommended Extensions
+> **注意 / Note**: Skill会自动从 federalreservehistory.org 更新真实理事会名单，环境变量仅在上游获取失败时作为 fallback。
+> The Skill auto-updates Board members from federalreservehistory.org; the env var is a fallback only.
 
-Future extensions could include:
--   **Real-Time Data Integration:** Connecting the pipeline to live FRED and FedWatch APIs for real-time forecasting.
--   **Agent Heterogeneity:** Expanding the number of archetypes or introducing dynamic persona evolution.
--   **Multimodal Inputs:** Incorporating visual data (charts) directly into the agent context.
+---
 
-## License
+## 📚 数据来源 / Data Sources
 
-This project is licensed under the MIT License. See the `LICENSE` file for details.
+| 数据 Data | 来源 Source | 频率 Frequency |
+|-----------|------------|:--:|
+| PCE / 核心PCE / CPI | FRED (BEA/BLS) | Monthly |
+| 失业率 / 非农 / 时薪 | FRED (BLS) | Monthly |
+| 国债收益率 3m/2y/10y | FRED (Treasury) | Daily |
+| VIX | FRED (CBOE) | Daily |
+| 联邦基金利率 | FRED (Fed) | Daily |
+| 利率期货隐含预期 | FRED FF + yfinance ZQ | Daily |
+| 理事会成员名单 | federalreservehistory.org | On each run |
 
-## Citation
+---
 
-If you use this code or the methodology in your research, please cite the original paper:
+## ⚠️ 局限性 / Limitations
 
-```bibtex
-@article{hou2025fedsight,
-  title={FedSight AI: Multi-Agent System Architecture for Federal Funds Target Rate Prediction},
-  author={Hou, Yuhan and Rao, Tianji and Tan, Jeremy Matthew and Viton, Adler and Zhang, Xiyue and Ye, David and Kodi, Abhishek and Dulam, Sanjana and Paul, Aditya and Feng, YiKai},
-  journal={arXiv preprint arXiv:2512.15728v1},
-  year={2025}
-}
-```
+| 局限 Limitation | 说明 Description |
+|----------------|-----------------|
+| 🕐 数据滞后 / Data lag | FRED部分数据有1-2个月发布延迟 / Some FRED data has 1-2 month release lag |
+| 📋 无褐皮书 / No Beige Book | 当前未接入美联储褐皮书全文 / Not yet integrated |
+| 💰 成本 / Cost | GPT-4o 完整7委员模拟约消耗50K-80K tokens / ~50K-80K tokens for full 7-member sim |
+| 🔮 仅预测定会议 / Scheduled only | 不预测紧急会议 / No emergency meeting prediction |
+| 📖 仅供参考 / Reference only | 所有预测不构成投资建议 / Not investment advice |
 
-For the implementation itself, you may cite this repository:
-```
-Chirinda, C. (2025). FedSight AI Replication Pipeline: An Open Source Implementation.
-GitHub repository: https://github.com/chirindaopensource/multi_agent_system_architecture_for_federal_funds_target_rate_prediction
-```
+---
 
-## Acknowledgments
+## 🔮 计划扩展 / Roadmap
 
--   Credit to **Yuhan Hou, Tianji Rao, Jeremy Matthew Tan, Adler Viton, Xiyue Zhang, David Ye, Abhishek Kodi, Sanjana Dulam, Aditya Paul, and YiKai Feng** for the foundational research that forms the entire basis for this computational replication.
--   This project is built upon the exceptional tools provided by the open-source community. Sincere thanks to the developers of the scientific Python ecosystem, including **Pandas, NumPy, Scikit-Learn, OpenAI, and CrewAI**.
+- [ ] 接入美联储褐皮书 RSS / Integrate Fed Beige Book RSS
+- [ ] 解析SEP点阵图PDF / Parse SEP Dot Plot PDF
+- [ ] RAG检索历史FOMC声明 / RAG for historical FOMC statements
+- [ ] 定时任务自动运行 / Scheduled auto-run before each FOMC meeting
+- [ ] 多语言支持 / Multi-language support
+- [ ] Telegram/Discord 推送通知 / Push notifications
 
---
+---
 
-*This README was generated based on the structure and content of the `multi_agent_system_architecture_for_federal_funds_target_rate_prediction_draft.ipynb` notebook and follows best practices for research software documentation.*
+## 📄 许可 / License
+
+MIT License — 详见 [LICENSE](LICENSE) 文件
+
+原项目 / Original project: [chirindaopensource/multi_agent_system_architecture_for_federal_funds_target_rate_prediction](https://github.com/chirindaopensource/multi_agent_system_architecture_for_federal_funds_target_rate_prediction)
+
+---
+
+## 🙏 致谢 / Acknowledgments
+
+- 论文作者 / Paper authors: Yuhan Hou, Tianji Rao, Jeremy Matthew Tan et al. (Duke University / BNY AI Hub)
+- 开源实现 / Open-source implementation: Craig Chirinda
+- 数据来源 / Data: FRED (Federal Reserve Bank of St. Louis), CME Group, federalreservehistory.org
