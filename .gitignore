@@ -1,0 +1,28 @@
+# Secrets & API Keys
+.env
+
+# Python
+__pycache__/
+*.pyc
+
+# Logs & temp output
+*.log
+market_data.txt
+market_raw.json
+fed_data_out.log
+output.log
+fomc_report.md
+fomc_sept_report.md
+fomc_sept_v2.md
+fomc_sept_bloomberg.md
+
+# Test/debug scripts
+check_bloomberg.py
+fetch_market.py
+search_bbg_tickers.py
+search_jolts.py
+test_bbg_tickers.py
+test_jolts.py
+run_sept.py
+run_sept_v2.py
+run_sept_bloomberg.py
